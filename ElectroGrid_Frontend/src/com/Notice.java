@@ -2,6 +2,10 @@ package com;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Date;
 
 
 
@@ -24,4 +28,63 @@ public class Notice
 						
 						return con; 
 			} 
+		
+		//View notices
+		public String readNotices() 
+		{ 
+			String output = ""; 
+			try
+			{ 
+				Connection con = connect(); 
+		 if (con == null) 
+		 { 
+			 return "Error while connecting to the database for reading."; 
+		 } 
+		 
+		 // Prepare the html table to be displayed
+		 output = "<table border=\"1\" class=\"table \"><tr><th>Admin Id</th>"
+		 		+ "<th>Notice Subject</th><th>Notice Body</th>"
+		 		+ "<th>Published Date</th>"
+		 		+ "<th>Update</th>"
+		 		+ "<th>Remove</th></tr>"; 
+		
+		 String query = "select * from notices"; 
+		 Statement stmt = con.createStatement(); 
+		 ResultSet rs = stmt.executeQuery(query);
+		 
+		 // iterate through the rows in the result set
+		 while (rs.next()) 
+		 { 
+			 String NoticeId = Integer.toString(rs.getInt("NoticeId")); 
+			 String userId = rs.getString("userId"); 
+			 String noticeSubject = rs.getString("noticeSubject"); 
+			 String noticeBody = rs.getString("noticeBody"); 
+			 String date = rs.getString("date"); 
+		 
+		 // Add into the html table
+		 output += "<tr><td><input id='hidNoticeIDUpdate' name='hidNoticeIDUpdate' type='hidden' value='"+NoticeId+"'>"+userId+"</td>"; 
+		 output += "<td>" + noticeSubject + "</td>"; 
+		 output += "<td>" + noticeBody + "</td>"; 
+		 output += "<td>" + date + "</td>"; 
+		 
+		 // buttons
+		 output += "<td><input name='btnUpdate' type='button' value='Update' "
+				 + "class='btnUpdate btn btn-secondary' data-noticeid='" + NoticeId + "'></td>"
+				 + "<td><input name='btnRemove' type='button' value='Remove' "
+				 + "class='btnRemove btn btn-danger' data-noticeid='" + NoticeId + "'></td></tr>"; 
+		 
+		 } 
+		 con.close(); 
+		 
+		 // Complete the html table
+		 output += "</table>"; 
+		 } 
+		 
+		catch (Exception e) 
+		 { 
+		 output = "Error while reading the notices."; 
+		 System.err.println(e.getMessage()); 
+		 } 
+		return output; 
+		}
 }
