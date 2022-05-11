@@ -87,4 +87,47 @@ public class Notice
 		 } 
 		return output; 
 		}
+		
+		//Insert Notices
+		public String insertNotice(String userId, String noticeSubject, String noticeBody){ 
+			
+			String output = ""; 
+			
+			try
+			{ 
+				Connection con = connect(); 
+				
+				if (con == null) 
+				{
+					return "Error while connecting to the database for inserting."; 
+					
+				} 
+				
+				// create a prepared statement
+				String query = "insert into notices(`NoticeId`,`userId`,`noticeSubject`,`noticeBody`,`date`)"+" values (?, ?, ?, ?, ?)"; 
+				PreparedStatement preparedStmt = con.prepareStatement(query); 
+				
+				// binding values
+				preparedStmt.setInt(1, 0); 
+				preparedStmt.setString(2, userId); 
+				preparedStmt.setString(3, noticeSubject); 
+				preparedStmt.setString(4, noticeBody); 
+				Date date = new Date();  
+				preparedStmt.setDate(5, new java.sql.Date(date.getTime()));
+				 
+				// execute the statement
+				preparedStmt.execute(); 
+				con.close(); 
+				
+				String newNotices = readNotices(); 
+				output = "{\"status\":\"success\",\"data\":\""+newNotices+"\"}"; 
+			} 
+			
+			catch (Exception e) 
+			{ 
+				output = "{\"status\":\"error\", \"data\":\"Error while inserting the notice.\"}"; 
+				System.err.println(e.getMessage()); 
+			} 
+			return output; 
+	} 
 }
