@@ -42,11 +42,12 @@ public class Notice
 		 } 
 		 
 		 // Prepare the html table to be displayed
-		 output = "<table border=\"1\" class=\"table \"><tr><th>Admin Id</th>"
-		 		+ "<th>Notice Subject</th><th>Notice Body</th>"
-		 		+ "<th>Published Date</th>"
-		 		+ "<th>Update</th>"
-		 		+ "<th>Remove</th></tr>"; 
+		 output = "<table border='1' class='table'>"
+					+"<th>Admin Id</th>"
+			 		+ "<th>Notice Subject</th><th>Notice Body</th>"
+			 		+ "<th>Published Date</th>"
+			 		+ "<th>Update</th>"
+			 		+ "<th>Remove</th></tr>"; 
 		
 		 String query = "select * from notices"; 
 		 Statement stmt = con.createStatement(); 
