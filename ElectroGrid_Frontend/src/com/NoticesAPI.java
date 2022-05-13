@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/NoticesAPI")
 public class NoticesAPI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	Notice noticeObj = new Notice(); 
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,7 +36,12 @@ public class NoticesAPI extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		String output = noticeObj.insertNotice(request.getParameter("userId"), 
+			       							   request.getParameter("noticeSubject"), 
+			       							   request.getParameter("noticeBody"));
+		response.getWriter().write(output);
+		
 	}
 
 	/**
